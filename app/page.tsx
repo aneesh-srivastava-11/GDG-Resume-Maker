@@ -37,6 +37,28 @@ export default function Home() {
   };
 
 
+  // Scaling state
+  const [scale, setScale] = useState(1);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        const availableWidth = entry.contentRect.width;
+        // 8.27in is approx 794px. We add some padding (e.g. 32px or 2rem) for margin.
+        const contentWidth = 840;
+        const newScale = Math.min(1, availableWidth / contentWidth);
+        setScale(newScale);
+      }
+    });
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [leftPercent]); // Re-check when divider moves
+
   return (
     <main className="flex min-h-screen">
       {/* Left: Editor */}
@@ -72,7 +94,8 @@ export default function Home() {
 
       {/* Right: Preview */}
       <div
-        className="bg-gray-100 p-4 overflow-auto min-w-0 print-area isolate border-l border-gray-200"
+        ref={containerRef}
+        className="bg-gray-100 p-4 overflow-y-auto overflow-x-hidden min-w-0 print-area isolate border-l border-gray-200"
         style={{ flexBasis: `${100 - leftPercent}%` }}
       >
         <div className="flex justify-end mb-2 no-print">
@@ -85,7 +108,20 @@ export default function Home() {
             Print PDF
           </button>
         </div>
-        <ResumePreview data={resumeData} template={template} />
+
+        {/* Scaled Wrapper */}
+        <div
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: 'top center',
+            width: '8.27in', // Ensure the container has the correct base width
+            margin: '0 auto',
+            height: 'fit-content'
+          }}
+        >
+          <ResumePreview data={resumeData} template={template} />
+        </div>
       </div>
     </main>
-  );}
+  );
+}
