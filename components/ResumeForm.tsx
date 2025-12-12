@@ -259,7 +259,7 @@ export const ResumeForm = ({ data, setData }: { data: ResumeData, setData: React
 
   // RENDER
   return (
-    <div className="p-4 bg-gray-50 rounded-lg max-h-screen overflow-y-auto">
+    <div className="p-4 bg-gray-50 rounded-lg">
       <FormSection
         titleNode={(
           <div className="flex items-end gap-3">

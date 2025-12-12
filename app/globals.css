@@ -3,43 +3,67 @@
 /* TODO: Add a `tailwind.config.ts` if you need custom theme, safelist, or plugins later. */
 
 
-html, body, #__next {
+html,
+body,
+#__next {
   height: 100%;
 }
 
 .resume-page {
-  width: 8.27in;           /* A4 width */
-  min-height: auto;        /* Allow height to fit content on screen */
-  padding-bottom: 0.5in;   /* Visual breathing room */
-  margin: 2rem auto;
+  width: 8.27in;
+  /* A4 width */
+  min-height: auto;
+  padding-bottom: 2rem;
+  /* Simple bottom spacing */
+  /* No margin, shadow, or border on screen for "one page site" feel */
   background-color: #ffffff;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
 }
 
 /* Print-friendly */
 @page {
- 
-  /* Turning off browser header/footer (URL/date) can't be forced via CSS; users must disable it in the print dialog. */
   size: 8.27in 11.69in;
   margin: 0;
 }
 
 @media print {
-  html, body { background-color: #ffffff; height: auto; }
-  /* Improve print color fidelity */
-  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  /* Hide UI chrome when printing */
-  .no-print { display: none !important; }
-  /* Remove preview padding/background so resume can use full page */
-  .print-area { padding: 0 !important; background: transparent !important; }
-  main { display: block; }
-  main > div { float: none !important; }
+
+  html,
+  body {
+    background-color: #ffffff;
+    height: auto;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-area {
+    padding: 0 !important;
+    background: transparent !important;
+  }
+
+  main {
+    display: block;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  main>div {
+    float: none !important;
+  }
+
   .resume-page {
-    box-shadow: none;
     margin: 0 auto;
-    width: 8.27in;        /* A4 width */
-    min-height: 11.69in;  /* Force A4 height for print to ensure full page */
+    width: 8.27in;
+    min-height: 11.69in;
+    /* Restore fixed A4 height for print */
     padding: 0;
+    box-shadow: none;
     border: none;
     page-break-inside: avoid;
   }

@@ -79,10 +79,10 @@ export default function Home() {
   }, [scale, resumeData]); // Re-measure if scale or data changes
 
   return (
-    <main className="flex min-h-screen">
+    <main className="flex h-screen overflow-hidden">
       {/* Left: Editor */}
       <div
-        className="p-4 overflow-auto min-w-0 no-print bg-white isolate"
+        className="p-4 overflow-y-auto min-w-0 no-print bg-white isolate scrollbar-thin"
         style={{ flexBasis: `${leftPercent}%` }}
       >
         <div className="flex items-center justify-between mb-3">
@@ -114,7 +114,7 @@ export default function Home() {
       {/* Right: Preview */}
       <div
         ref={containerRef}
-        className="bg-gray-100 p-4 overflow-y-auto overflow-x-hidden min-w-0 print-area isolate border-l border-gray-200"
+        className="bg-white p-4 overflow-y-auto overflow-x-hidden min-w-0 print-area isolate border-l border-gray-200 scrollbar-thin"
         style={{ flexBasis: `${100 - leftPercent}%` }}
       >
         <div className="flex justify-end mb-2 no-print">
@@ -140,7 +140,7 @@ export default function Home() {
             style={{
               transform: `scale(${scale})`,
               transformOrigin: 'top center',
-              width: '8.27in', // Ensure the container has the correct base width
+              width: '8.27in',
               margin: '0 auto',
             }}
           >
