@@ -85,7 +85,7 @@ export const ResumeForm = ({ data, setData }: { data: ResumeData, setData: React
       return { ...prevData, [section]: newArray };
     });
   };
-  
+
   const addPoint = (section: 'projects' | 'experience', entryIndex: number) => {
     setData(prevData => {
       const newArray = [...prevData[section]];
@@ -213,6 +213,49 @@ export const ResumeForm = ({ data, setData }: { data: ResumeData, setData: React
     }));
   };
 
+
+
+  // Skills handlers
+  const addSkill = () => {
+    setData(prev => ({
+      ...prev,
+      skills: [...prev.skills, { category: '', list: '' }],
+    }));
+  };
+  const updateSkill = (index: number, field: 'category' | 'list', value: string) => {
+    setData(prev => {
+      const next = [...prev.skills];
+      next[index] = { ...next[index], [field]: value };
+      return { ...prev, skills: next };
+    });
+  };
+  const removeSkill = (index: number) => {
+    setData(prev => ({
+      ...prev,
+      skills: prev.skills.filter((_, i) => i !== index),
+    }));
+  };
+
+  // Certifications handlers
+  const addCertification = () => {
+    setData(prev => ({
+      ...prev,
+      certifications: [...prev.certifications, ''],
+    }));
+  };
+  const updateCertification = (index: number, value: string) => {
+    setData(prev => {
+      const next = [...prev.certifications];
+      next[index] = value;
+      return { ...prev, certifications: next };
+    });
+  };
+  const removeCertification = (index: number) => {
+    setData(prev => ({
+      ...prev,
+      certifications: prev.certifications.filter((_, i) => i !== index),
+    }));
+  };
 
   // RENDER
   return (
@@ -358,7 +401,7 @@ export const ResumeForm = ({ data, setData }: { data: ResumeData, setData: React
           <button onClick={addEducation} className="w-full mt-1 p-2 bg-black text-white rounded hover:bg-gray-800">+ Add Education</button>
         </div>
       </FormSection>
-      
+
       <FormSection
         titleNode={(
           <div className="grid grid-cols-1 gap-1">
@@ -496,6 +539,68 @@ export const ResumeForm = ({ data, setData }: { data: ResumeData, setData: React
             </div>
           ))}
           <button onClick={() => addArrayItem('projects')} className="w-full mt-1 p-2 bg-black text-white rounded hover:bg-gray-800">+ Add Project</button>
+        </div>
+      </FormSection>
+
+
+      {/* Skills */}
+      <FormSection
+        titleNode={(
+          <div className="grid grid-cols-1 gap-1">
+            <label className="text-sm font-medium text-gray-700">{`Skills Section Heading`}</label>
+            <input
+              type="text"
+              value={data.headings.skills}
+              onChange={(e) => handleHeadingChange('skills', e.target.value)}
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
+          </div>
+        )}
+      >
+        <div className="space-y-4">
+          {data.skills.map((skill, index) => (
+            <div key={index} className="bg-gray-50 border rounded-md p-3 relative">
+              <button onClick={() => removeSkill(index)} aria-label="Remove skill" className="absolute -top-3 -right-3 text-white bg-red-500 rounded-full h-7 w-7 flex items-center justify-center shadow">×</button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <Input label="Category (e.g. Languages)" name={`skills[${index}].category`} value={skill.category} onChange={(e) => updateSkill(index, 'category', e.target.value)} />
+                <Input label="List (e.g. Java, Python)" name={`skills[${index}].list`} value={skill.list} onChange={(e) => updateSkill(index, 'list', e.target.value)} />
+              </div>
+            </div>
+          ))}
+          <button onClick={addSkill} className="w-full mt-1 p-2 bg-black text-white rounded hover:bg-gray-800">+ Add Skill Category</button>
+        </div>
+      </FormSection>
+
+      {/* Certifications */}
+      <FormSection
+        titleNode={(
+          <div className="grid grid-cols-1 gap-1">
+            <label className="text-sm font-medium text-gray-700">{`Certifications Section Heading`}</label>
+            <input
+              type="text"
+              value={data.headings.certifications}
+              onChange={(e) => handleHeadingChange('certifications', e.target.value)}
+              className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+            />
+          </div>
+        )}
+      >
+        <div className="space-y-4">
+          {data.certifications.map((cert, index) => (
+            <div key={index} className="bg-gray-50 border rounded-md p-3 relative">
+              <button onClick={() => removeCertification(index)} aria-label="Remove certification" className="absolute -top-3 -right-3 text-white bg-red-500 rounded-full h-7 w-7 flex items-center justify-center shadow">×</button>
+              <div className="grid grid-cols-1 gap-1">
+                <label className="text-sm font-medium text-gray-700">Certification</label>
+                <input
+                  type="text"
+                  value={cert}
+                  onChange={(e) => updateCertification(index, e.target.value)}
+                  className="mt-1 block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-400"
+                />
+              </div>
+            </div>
+          ))}
+          <button onClick={addCertification} className="w-full mt-1 p-2 bg-black text-white rounded hover:bg-gray-800">+ Add Certification</button>
         </div>
       </FormSection>
 
