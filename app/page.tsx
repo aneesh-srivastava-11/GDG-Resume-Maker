@@ -39,7 +39,9 @@ export default function Home() {
 
   // Scaling state
   const [scale, setScale] = useState(1);
+  const [containerHeight, setContainerHeight] = useState<number | 'auto'>('auto');
   const containerRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -58,6 +60,23 @@ export default function Home() {
     observer.observe(container);
     return () => observer.disconnect();
   }, [leftPercent]); // Re-check when divider moves
+
+  // Measure content height to adjust wrapper
+  useEffect(() => {
+    const content = contentRef.current;
+    if (!content) return;
+
+    const observer = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        // Adjust container height to match scaled content + margin
+        // contentRect.height is the unscaled height
+        setContainerHeight(entry.contentRect.height * scale);
+      }
+    });
+
+    observer.observe(content);
+    return () => observer.disconnect();
+  }, [scale, resumeData]); // Re-measure if scale or data changes
 
   return (
     <main className="flex min-h-screen">
@@ -112,14 +131,21 @@ export default function Home() {
         {/* Scaled Wrapper */}
         <div
           style={{
-            transform: `scale(${scale})`,
-            transformOrigin: 'top center',
-            width: '8.27in', // Ensure the container has the correct base width
-            margin: '0 auto',
-            height: 'fit-content'
+            height: typeof containerHeight === 'number' ? `${containerHeight + 40}px` : 'auto', // +40 for top margin
+            transition: 'height 0.2s ease-out'
           }}
         >
-          <ResumePreview data={resumeData} template={template} />
+          <div
+            ref={contentRef}
+            style={{
+              transform: `scale(${scale})`,
+              transformOrigin: 'top center',
+              width: '8.27in', // Ensure the container has the correct base width
+              margin: '0 auto',
+            }}
+          >
+            <ResumePreview data={resumeData} template={template} />
+          </div>
         </div>
       </div>
     </main>

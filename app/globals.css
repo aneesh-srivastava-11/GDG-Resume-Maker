@@ -9,7 +9,8 @@ html, body, #__next {
 
 .resume-page {
   width: 8.27in;           /* A4 width */
-  min-height: 11.69in;     /* A4 height */
+  min-height: auto;        /* Allow height to fit content on screen */
+  padding-bottom: 0.5in;   /* Visual breathing room */
   margin: 2rem auto;
   background-color: #ffffff;
   box-shadow: 0 0 15px rgba(0,0,0,0.1);
@@ -37,7 +38,7 @@ html, body, #__next {
     box-shadow: none;
     margin: 0 auto;
     width: 8.27in;        /* A4 width */
-    min-height: 11.69in;  /* A4 height */
+    min-height: 11.69in;  /* Force A4 height for print to ensure full page */
     padding: 0;
     border: none;
     page-break-inside: avoid;
