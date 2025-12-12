@@ -114,7 +114,7 @@ export default function Home() {
       {/* Right: Preview */}
       <div
         ref={containerRef}
-        className="bg-white p-4 overflow-y-auto overflow-x-hidden min-w-0 print-area isolate border-l border-gray-200 scrollbar-thin"
+        className="bg-white p-4 overflow-y-auto overflow-x-hidden min-w-0 print-area isolate border-l border-gray-200 scrollbar-thin print:!overflow-visible print:!h-auto print:!block print:!p-0 print:!border-none"
         style={{ flexBasis: `${100 - leftPercent}%` }}
       >
         <div className="flex justify-end mb-2 no-print">
@@ -130,6 +130,7 @@ export default function Home() {
 
         {/* Scaled Wrapper */}
         <div
+          className="print:!h-auto print:!m-0"
           style={{
             height: typeof containerHeight === 'number' ? `${containerHeight + 40}px` : 'auto', // +40 for top margin
             transition: 'height 0.2s ease-out'
@@ -137,6 +138,7 @@ export default function Home() {
         >
           <div
             ref={contentRef}
+            className="print:!transform-none print:!w-[8.27in] print:!m-0 print:!origin-top-left"
             style={{
               transform: `scale(${scale})`,
               transformOrigin: 'top center',
