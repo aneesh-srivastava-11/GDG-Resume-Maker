@@ -2,7 +2,9 @@
 export type Entry = {
   title: string;
   points: string[];
-  link?: string;
+  link?: string; // @deprecated use github or website
+  github?: string;
+  website?: string;
   stack?: string;
   company?: string;
   duration?: string;
@@ -53,7 +55,8 @@ export const initialData = {
   projects: [
     {
       title: "Example Project",
-      link: "https://github.com/johndoe/example-project",
+      github: "https://github.com/johndoe/example-project",
+      website: "https://example-project.demo.com",
       stack: "React, TypeScript, Node.js",
       points: [
         "Implemented core features and UI for a sample project.",

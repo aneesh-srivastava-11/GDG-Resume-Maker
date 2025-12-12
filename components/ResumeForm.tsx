@@ -516,6 +516,8 @@ export const ResumeForm = ({ data, setData }: { data: ResumeData, setData: React
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Input label="Project Title" name={`projects[${index}].title`} value={proj.title} onChange={(e) => handleArrayChange('projects', index, 'title', e.target.value)} />
                 <Input label="Tech Stack" name={`projects[${index}].stack`} value={proj.stack || ''} onChange={(e) => handleArrayChange('projects', index, 'stack', e.target.value)} />
+                <Input label="GitHub Link" name={`projects[${index}].github`} value={proj.github || ''} onChange={(e) => handleArrayChange('projects', index, 'github', e.target.value)} />
+                <Input label="Website Link" name={`projects[${index}].website`} value={proj.website || ''} onChange={(e) => handleArrayChange('projects', index, 'website', e.target.value)} />
               </div>
 
               <div className="mt-3">
