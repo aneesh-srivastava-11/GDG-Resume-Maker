@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useReactToPrint } from 'react-to-print';
 import { ResumeForm } from '@/components/ResumeForm';
 import { ResumePreview } from '@/components/ResumePreview';
 import { initialData, type ResumeData } from '@/lib/initialData';
@@ -78,6 +79,11 @@ export default function Home() {
     return () => observer.disconnect();
   }, [scale, resumeData]); // Re-measure if scale or data changes
 
+  const handlePrint = useReactToPrint({
+    contentRef,
+    documentTitle: 'Resume',
+  });
+
   return (
     <main className="flex h-screen overflow-hidden">
       {/* Left: Editor */}
@@ -120,7 +126,7 @@ export default function Home() {
         <div className="flex justify-end mb-2 no-print">
           <button
             type="button"
-            onClick={() => window.print()}
+            onClick={() => handlePrint()}
             className="px-3 py-1.5 text-sm rounded bg-black text-white hover:bg-gray-800"
             aria-label="Print resume as PDF"
           >
