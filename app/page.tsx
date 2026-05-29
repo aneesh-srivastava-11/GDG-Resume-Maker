@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useReactToPrint } from 'react-to-print';
 import { ResumeForm } from '@/components/ResumeForm';
 import { ResumePreview } from '@/components/ResumePreview';
 import { initialData, type ResumeData } from '@/lib/initialData';
@@ -9,6 +8,7 @@ import { initialData, type ResumeData } from '@/lib/initialData';
 export default function Home() {
   const [resumeData, setResumeData] = useState<ResumeData>(initialData);
   const [template, setTemplate] = useState<'harvard'>('harvard');
+  const [isPrinting, setIsPrinting] = useState(false);
 
   // Resizable split state
   const [leftPercent, setLeftPercent] = useState<number>(50);
@@ -79,10 +79,16 @@ export default function Home() {
     return () => observer.disconnect();
   }, [scale, resumeData]); // Re-measure if scale or data changes
 
-  const handlePrint = useReactToPrint({
-    contentRef,
-    documentTitle: 'Resume',
-  });
+  const handlePrint = () => {
+    // 100% force remove transforms via React State
+    setIsPrinting(true);
+    
+    setTimeout(() => {
+      window.print();
+      // Restore the UI
+      setIsPrinting(false);
+    }, 150);
+  };
 
   return (
     <main className="flex h-screen overflow-hidden">
@@ -126,7 +132,7 @@ export default function Home() {
         <div className="flex justify-end mb-2 no-print">
           <button
             type="button"
-            onClick={() => handlePrint()}
+            onClick={handlePrint}
             className="px-3 py-1.5 text-sm rounded bg-black text-white hover:bg-gray-800"
             aria-label="Print resume as PDF"
           >
@@ -137,7 +143,7 @@ export default function Home() {
         {/* Scaled Wrapper */}
         <div
           className="print:!h-auto print:!m-0"
-          style={{
+          style={isPrinting ? {} : {
             height: typeof containerHeight === 'number' ? `${containerHeight + 40}px` : 'auto', // +40 for top margin
             transition: 'height 0.2s ease-out'
           }}
@@ -145,7 +151,7 @@ export default function Home() {
           <div
             ref={contentRef}
             className="print:!transform-none print:!w-[8.27in] print:!m-0 print:!origin-top-left"
-            style={{
+            style={isPrinting ? { width: '8.27in', margin: '0 auto' } : {
               transform: `scale(${scale})`,
               transformOrigin: 'top center',
               width: '8.27in',
